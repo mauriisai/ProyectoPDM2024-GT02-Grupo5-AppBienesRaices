@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">ProyectoPDM2024-GT02-Grupo5-AppBienesRaices</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+</resources>
