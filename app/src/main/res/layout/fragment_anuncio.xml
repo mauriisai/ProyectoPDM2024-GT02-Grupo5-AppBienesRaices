@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.anucio.anuncio">
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Imagen grande -->
+        <ImageView
+            android:id="@+id/grandeImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="133dp"
+            android:layout_margin="8dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/imagen_grande" />
+
+        <!-- Contenedor para imágenes pequeñas -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- Imagen pequeña 1 -->
+            <ImageView
+                android:id="@+id/pequenaImageView1"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img1" />
+
+            <!-- Imagen pequeña 2 -->
+            <ImageView
+                android:id="@+id/pequenaImageView2"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img2" />
+
+            <!-- Imagen pequeña 3 -->
+            <ImageView
+                android:id="@+id/pequenaImageView3"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img3" />
+
+            <!-- Imagen pequeña 4 -->
+            <ImageView
+                android:id="@+id/pequenaImageView4"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img4" />
+
+            <!-- Imagen pequeña 5 -->
+            <ImageView
+                android:id="@+id/pequenaImageView5"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img5" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/text_Titulo"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="Título del anuncio"
+            android:textAlignment="center"
+            android:textColor="#041577"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="359dp"
+        android:layout_height="183dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="27dp"
+        android:layout_marginBottom="8dp"
+        app:cardBackgroundColor="#B2CDED"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/text_Direccion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:text="Dirección:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textTamaño"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="60dp"
+            android:text="Tamaño:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textPrecio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="90dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="Precio:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_Detalles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="105dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="Detalles del inmueble"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_Habitaciones"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="220dp"
+            android:layout_marginTop="30dp"
+            android:text="Habitaciones:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_Parqueo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="220dp"
+            android:layout_marginTop="60dp"
+            android:text="Parqueo:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_Baño"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="220dp"
+            android:layout_marginTop="90dp"
+            android:text="Baños:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_MasDetalles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="130dp"
+            android:layout_marginTop="116dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="Más detalles"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/editText_input"
+            android:layout_width="328dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="140dp"
+            android:background="@drawable/rounded_edittext_background"
+            android:hint="  Detalles..."
+            android:inputType="text"
+            android:textColor="#000000" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"></LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="363dp"
+        android:layout_height="194dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="460dp"
+        android:layout_marginEnd="22dp"
+        app:cardBackgroundColor="#B1CCEC"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/button_agendar"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_marginLeft="130dp"
+            android:layout_marginTop="150dp"
+            android:background="#3F51B5"
+            android:text="Agendar" />
+
+        <ImageButton
+            android:id="@+id/imageButtonGmail"
+            android:layout_width="79dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="70dp"
+            android:background="#B1CCEC"
+            app:srcCompat="@drawable/gmail" />
+
+        <ImageButton
+            android:id="@+id/imageButtonWhatsapp"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="210dp"
+            android:layout_marginTop="70dp"
+            android:background="#B1CCEC"
+            app:srcCompat="@drawable/whatsapp" />
+
+        <ImageButton
+            android:id="@+id/imageButton_calendario"
+            android:layout_width="34dp"
+            android:layout_height="31dp"
+            android:layout_marginLeft="120dp"
+            android:layout_marginTop="110dp"
+            android:background="#B1CCEC"
+            app:srcCompat="@drawable/calendario" />
+
+        <ImageButton
+            android:id="@+id/imageButton_Hora"
+            android:layout_width="34dp"
+            android:layout_height="31dp"
+            android:layout_marginLeft="260dp"
+            android:layout_marginTop="111dp"
+            android:background="#B1CCEC"
+            app:srcCompat="@drawable/reloj" />
+
+        <TextView
+            android:id="@+id/text_Nombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="10dp"
+            android:text="Nombre del vendedor: José Mejía Arturo"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textNumTel"
+            android:layout_width="344dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="40dp"
+            android:text="Número de teléfono: +503 75202525"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textFecha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="115dp"
+            android:text="Fecha:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_Hora"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="210dp"
+            android:layout_marginTop="115dp"
+            android:text="Hora:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
