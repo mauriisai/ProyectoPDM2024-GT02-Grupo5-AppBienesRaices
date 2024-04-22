@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".RegisterActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="650dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/rounded_blue_rectangle"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/textViewRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-600dp"
+            android:text="REGISTRAR"
+            android:textSize="24sp"
+            android:textColor="#FFFFFF"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textViewUsuario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewRegister"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="120dp"
+        android:text="Usuario"
+        android:textSize="16sp"
+        android:textColor="#FFFFFF"/>
+
+    <EditText
+        android:id="@+id/editTextUsuario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewUsuario"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:inputType="text"
+        android:background="@drawable/rounded_white_rectangle"/>
+
+    <TextView
+        android:id="@+id/textViewContraseña"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextUsuario"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:text="Contraseña"
+        android:textSize="16sp"
+        android:textColor="#FFFFFF"/>
+
+    <EditText
+        android:id="@+id/editTextContraseña"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewContraseña"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:inputType="textPassword"
+        android:background="@drawable/rounded_white_rectangle"/>
+
+    <TextView
+        android:id="@+id/textViewNombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextContraseña"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:text="Nombre"
+        android:textSize="16sp"
+        android:textColor="#FFFFFF"/>
+
+    <EditText
+        android:id="@+id/editTextNombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewNombre"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:inputType="text"
+        android:background="@drawable/rounded_white_rectangle"/>
+
+    <TextView
+        android:id="@+id/textViewTelefonoPrincipal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextNombre"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:text="Teléfono Principal"
+        android:textSize="16sp"
+        android:textColor="#FFFFFF"/>
+
+    <EditText
+        android:id="@+id/editTextTelefonoPrincipal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewTelefonoPrincipal"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:inputType="phone"
+        android:background="@drawable/rounded_white_rectangle"/>
+
+    <TextView
+        android:id="@+id/textViewTelefonoSecundario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextTelefonoPrincipal"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:text="Teléfono Secundario"
+        android:textSize="16sp"
+        android:textColor="#FFFFFF"/>
+
+    <EditText
+        android:id="@+id/editTextTelefonoSecundario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewTelefonoSecundario"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:inputType="phone"
+        android:background="@drawable/rounded_white_rectangle"/>
+
+    <TextView
+        android:id="@+id/textViewCorreo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextTelefonoSecundario"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:text="Correo"
+        android:textSize="16sp"
+        android:textColor="#FFFFFF"/>
+
+    <EditText
+        android:id="@+id/editTextCorreo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewCorreo"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:inputType="textEmailAddress"
+        android:background="@drawable/rounded_white_rectangle"/>
+
+    <TextView
+        android:id="@+id/textViewTipoUsuario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextCorreo"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:text="Tipo de Usuario"
+        android:textSize="16sp"
+        android:textColor="#FFFFFF"/>
+
+    <Spinner
+        android:id="@+id/spinnerTipoUsuario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewTipoUsuario"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/rounded_white_rectangle"/>
+
+    <Button
+        android:id="@+id/buttonRegistrar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spinnerTipoUsuario"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        android:text="Registrar"
+        android:background="@drawable/rounded_white_rectangle"/>
+
+</RelativeLayout>
