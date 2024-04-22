@@ -1,171 +1,231 @@
-<LinearLayout
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    tools:context=".ui.crearAnuncio.CrearAnuncioFragment" >
 
-    <!-- Etiqueta para el título -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Título del Anuncio"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <!-- Campo para el título del anuncio -->
-    <EditText
-        android:id="@+id/et_titulo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Digite el título"
-        android:importantForAutofill="no"
-        android:minHeight="42dp" />
-
-    <!-- Etiqueta para la descripción -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Descripción del Inmueble"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <!-- Campo para la descripción del inmueble -->
-    <EditText
-        android:id="@+id/et_descripcion"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="Describe el inmueble"
-        android:importantForAutofill="no"
-        android:inputType="textMultiLine"
-        android:minHeight="42dp" />
-
-    <!-- Etiqueta para el precio -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Precio"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <!-- Campo para el precio -->
-    <EditText
-        android:id="@+id/et_precio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Digite el precio"
-        android:importantForAutofill="no"
-        android:inputType="numberDecimal"
-        android:minHeight="42dp" />
-
-    <!-- Etiqueta para el tamaño -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tamaño en m²"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <!-- Campo para el tamaño en metros cuadrados -->
-    <EditText
-        android:id="@+id/et_tamanio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Digite tamaño en m²"
-        android:importantForAutofill="no"
-        android:inputType="numberDecimal"
-        android:minHeight="42dp" />
-
-
-    <!-- Tipo de Inmueble -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
+        <androidx.cardview.widget.CardView
+            android:layout_width="360dp"
+            android:layout_height="320dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="10dp"
+            app:cardBackgroundColor="#B2CDED"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/cardViewCrear"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Etiqueta para el título -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Título del Anuncio"
+                    android:layout_marginStart="15dp"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <!-- Campo para el título del anuncio -->
+                <EditText
+                    android:id="@+id/et_titulo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Digite el título"
+                    android:importantForAutofill="no"
+                    android:minHeight="42dp" />
+
+                <!-- Etiqueta para la descripción -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Descripción del Inmueble"
+                    android:layout_marginStart="15dp"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <!-- Campo para la descripción del inmueble -->
+                <EditText
+                    android:id="@+id/et_descripcion"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Describe el inmueble"
+                    android:importantForAutofill="no"
+                    android:inputType="textMultiLine"
+                    android:minHeight="42dp" />
+
+                <!-- Etiqueta para el precio -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Precio"
+                    android:layout_marginStart="15dp"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <!-- Campo para el precio -->
+                <EditText
+                    android:id="@+id/et_precio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Digite el precio"
+                    android:importantForAutofill="no"
+                    android:inputType="numberDecimal"
+                    android:minHeight="42dp" />
+
+                <!-- Etiqueta para el tamaño -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tamaño en m²"
+                    android:layout_marginStart="15dp"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <!-- Campo para el tamaño en metros cuadrados -->
+                <EditText
+                    android:id="@+id/et_tamanio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Digite tamaño en m²"
+                    android:importantForAutofill="no"
+                    android:inputType="numberDecimal"
+                    android:minHeight="42dp" />
+
+
+                <!-- Tipo de Inmueble -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tipo de Inmueble"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/spinner_tipoInmueble"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="42dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewCrear"
+            android:layout_width="360dp"
+            android:layout_height="195dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            app:cardBackgroundColor="#B1CCEC"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <!-- Etiqueta para la direccion -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="UBICACION"
+                    android:layout_marginStart="20dp"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <!-- Departamento -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Departamento"
+                        android:layout_marginStart="5dp"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/spinner_departamento"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="42dp" />
+                </LinearLayout>
+
+                <!-- Municipio -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Municipio"
+                        android:layout_marginStart="5dp"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/spinner_municipio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="42dp" />
+                </LinearLayout>
+
+                <!-- Campo para la direccion -->
+                <EditText
+                    android:id="@+id/et_direccion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Digite direccion exacta"
+                    android:importantForAutofill="no"
+                    android:inputType="textMultiLine"
+                    android:minHeight="42dp" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Botón para abrir galeria -->
+        <Button
+            android:id="@+id/btn_cargarImg"
             android:layout_width="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:layout_height="wrap_content"
-            android:text="Tipo de Inmueble"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:text="@string/btn_img" />
 
-        <Spinner
-            android:id="@+id/spinner_tipoInmueble"
-            android:layout_width="match_parent"
+        <!-- Botón para publicar el anuncio -->
+        <Button
+            android:id="@+id/btn_publicar"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="210dp"
             android:layout_height="wrap_content"
-            android:minHeight="42dp" />
+            android:text="Publicar Anuncio" />
+
     </LinearLayout>
 
-    <!-- Etiqueta para la direccion -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="UBICACION"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <!-- Departamento -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Departamento"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <Spinner
-            android:id="@+id/spinner_departamento"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="42dp" />
-    </LinearLayout>
-
-    <!-- Municipio -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Municipio"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <Spinner
-            android:id="@+id/spinner_municipio"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="42dp" />
-    </LinearLayout>
-
-    <!-- Campo para la direccion -->
-    <EditText
-        android:id="@+id/et_direccion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Digite direccion exacta"
-        android:importantForAutofill="no"
-        android:inputType="textMultiLine"
-        android:minHeight="42dp" />
-
-    <!-- Botón para abrir galeria -->
-    <Button
-        android:id="@+id/btn_cargarImg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_img" />
-
-    <!-- Botón para publicar el anuncio -->
-    <Button
-        android:id="@+id/btn_publicar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Publicar Anuncio" />
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
