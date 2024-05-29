@@ -1,4 +1,4 @@
-package com.example.proyectopdm2024_gt02_grupo5_appbienesraices.ui.anucio
+package com.example.proyectopdm2024_gt02_grupo5_appbienesraices.ui.anuncio
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
