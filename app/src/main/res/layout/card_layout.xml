@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:cad_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
+    android:layout_margin="12dp"
+    cad_view:cardBackgroundColor="#fff"
+    cad_view:cardCornerRadius="20dp"
+    cad_view:cardElevation="6dp"
+
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:outlineAmbientShadowColor="#000000"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="201dp"
+            android:layout_height="127dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="85dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="85dp"></ImageView>
+
+        <TextView
+            android:id="@+id/tittle"
+            android:layout_width="222dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="76dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="73dp"
+            android:gravity="center"
+            android:text="Artículo 1"
+            android:textColor="#012677"
+            android:textSize="25dp"
+            android:textStyle="bold"></TextView>
+
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tittle"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="17dp"
+            android:text="Precio:"
+            android:textColor="#5B5B5B"
+            android:textSize="20dp"></TextView>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="16dp"
+            android:text="Ubicación:"
+            android:textColor="#5B5B5B"
+            android:textSize="20dp"></TextView>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView2"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="27dp"
+            android:text="Tamaño:"
+            android:textColor="#5B5B5B"
+            android:textSize="20dp"></TextView>
+
+        <TextView
+            android:id="@+id/textPrecio"
+            android:layout_width="173dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tittle"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="33dp"
+            android:layout_toEndOf="@+id/textView"
+            android:text="$750,000.00"
+            android:textColor="#5B5B5B"
+            android:textSize="20dp"></TextView>
+
+        <TextView
+            android:id="@+id/textUbicacion"
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textPrecio"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="9dp"
+            android:layout_toEndOf="@+id/textView2"
+            android:text="Soyapango, San Salvador"
+            android:textColor="#5B5B5B"
+            android:textSize="20dp"></TextView>
+
+        <TextView
+            android:id="@+id/textDimensiones"
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textUbicacion"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="12dp"
+            android:layout_toEndOf="@+id/textView3"
+            android:text="70 mts x 70 mts"
+            android:textColor="#5B5B5B"
+            android:textSize="20dp"></TextView>
+
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>
