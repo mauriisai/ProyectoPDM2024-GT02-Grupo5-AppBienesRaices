@@ -5,10 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyectopdm2024_gt02_grupo5_appbienesraices.CustomAdapter
 import com.example.proyectopdm2024_gt02_grupo5_appbienesraices.R
+import com.example.proyectopdm2024_gt02_grupo5_appbienesraices.data.DatabaseHelper
+import com.example.proyectopdm2024_gt02_grupo5_appbienesraices.databinding.FragmentCrearAnuncioBinding
+import com.example.proyectopdm2024_gt02_grupo5_appbienesraices.databinding.FragmentPrincipalAnunciosBinding
+import com.example.proyectopdm2024_gt02_grupo5_appbienesraices.ui.crearAnuncio.CrearAnuncioViewModel
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,11 +27,16 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class PrincipalAnuncios : Fragment() {
+    private var _binding: FragmentPrincipalAnunciosBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var dbHelper: DatabaseHelper
+    private lateinit var adapterDepartamentos: ArrayAdapter<String>
 
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,23 +54,42 @@ class PrincipalAnuncios : Fragment() {
 
 
 
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
+
+
     ): View? {
         // Inflate the layout for this fragment
+        val crearAnuncioViewModel =
+            ViewModelProvider(this).get(PrincipalAnunciosViewModel::class.java)
+        _binding = FragmentPrincipalAnunciosBinding.inflate(inflater, container, false)
+        val root: View = binding.root
 
-        return inflater.inflate(R.layout.fragment_principal_anuncios, container, false)
+        return root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         val recycler = view.findViewById<RecyclerView>(R.id.recyclerView)
         val adapter = CustomAdapter()
         recycler.layoutManager = LinearLayoutManager(requireContext())  // Use requireContext() here
         recycler.adapter = adapter
+
+        dbHelper = DatabaseHelper(requireContext())
+
+        LlenarSpinnersDepartamentos()
+
+    }
+
+    private fun LlenarSpinnersDepartamentos() {
+        val departamentos = dbHelper.getAllDepartamentos().map { it.nombre }
+        adapterDepartamentos = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, departamentos)
+        adapterDepartamentos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerUbicaciones.adapter = adapterDepartamentos
     }
 
     companion object {

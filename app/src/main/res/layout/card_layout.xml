@@ -76,7 +76,7 @@
             android:layout_below="@+id/textView2"
             android:layout_alignParentStart="true"
             android:layout_marginStart="1dp"
-            android:layout_marginTop="27dp"
+            android:layout_marginTop="40dp"
             android:text="Tamaño:"
             android:textColor="#5B5B5B"
             android:textSize="20dp"></TextView>
@@ -111,13 +111,13 @@
 
         <TextView
             android:id="@+id/textDimensiones"
-            android:layout_width="175dp"
-            android:layout_height="wrap_content"
+            android:layout_width="172dp"
+            android:layout_height="48dp"
             android:layout_below="@+id/textUbicacion"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="12dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="8dp"
             android:layout_toEndOf="@+id/textView3"
             android:text="70 mts x 70 mts"
             android:textColor="#5B5B5B"

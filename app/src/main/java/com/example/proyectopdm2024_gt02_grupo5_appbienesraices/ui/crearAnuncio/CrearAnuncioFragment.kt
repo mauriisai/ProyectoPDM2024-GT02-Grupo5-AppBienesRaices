@@ -40,8 +40,9 @@ class CrearAnuncioFragment : Fragment() {
 
         // Llenar tablas Catalogos con datos iniciales
         // llenarTablaTiposInmueble()
-        // llenarTablaDepartamentos()
-        // llenarTablaMunicipios()
+
+        //llenarTablaDepartamentos()
+        //llenarTablaMunicipios()
 
 
         // Llamada metodos de llenado de Spinners

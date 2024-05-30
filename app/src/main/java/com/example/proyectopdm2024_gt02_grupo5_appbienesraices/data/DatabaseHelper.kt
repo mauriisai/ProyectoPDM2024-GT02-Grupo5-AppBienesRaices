@@ -5,6 +5,8 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.os.Build
+import androidx.annotation.RequiresApi
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -139,6 +141,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     }
 
     // Método para insertar los valores iniciales en la tabla ESTADO_CITA
+    @RequiresApi(Build.VERSION_CODES.O)
     fun insertCita(cita: Cita): Long {
         val db = this.writableDatabase
         val values = ContentValues().apply {
@@ -162,6 +165,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     }
 
     // Metodo para obtener todos los registros de la tabla Citas
+    @RequiresApi(Build.VERSION_CODES.O)
     fun getAllCitas(): List<Cita> {
         val db = this.readableDatabase
         val cursor: Cursor = db.query(TABLE_CITAS, null, null, null, null, null, null)
