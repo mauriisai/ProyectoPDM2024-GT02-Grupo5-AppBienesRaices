@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation_usuario"
+    app:startDestination="@id/principalAnuncios">
+
+    <fragment
+        android:id="@+id/principalAnuncios"
+        android:name="com.example.proyectopdm2024_gt02_grupo5_appbienesraices.ui.PrincipalAnuncios.PrincipalAnuncios"
+        android:label="fragment_principal_anuncios"
+        tools:layout="@layout/fragment_principal_anuncios" />
+</navigation>
