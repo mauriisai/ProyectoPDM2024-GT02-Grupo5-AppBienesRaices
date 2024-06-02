@@ -83,7 +83,9 @@
         android:layout_below="@id/buttonLogin"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:text="No tienes cuenta? Registrate aquí."
-        android:textColor="#FFFFFF"/>
+        android:text="No tienes cuenta? Regístrate aquí."
+        android:textColor="#FFFFFF"
+        android:clickable="true"
+        android:focusable="true"/>
 
 </RelativeLayout>

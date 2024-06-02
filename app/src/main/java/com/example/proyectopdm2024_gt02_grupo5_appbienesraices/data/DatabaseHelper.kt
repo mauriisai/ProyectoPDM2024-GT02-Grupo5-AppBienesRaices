@@ -32,6 +32,27 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         private const val COLUMN_MOTIVO_CANCELACION = "MOTIVO_CANCELACION"
         private const val COLUMN_USUARIO_CANCELACION = "USUARIO_CANCELACION"
 
+        // Columnas de la tabla de usuarios
+        private const val TABLE_USUARIOS = "USUARIOS"
+        private const val COLUMN_ID_USUARIO = "ID_USUARIO"
+        private const val COLUMN_USUARIO = "USUARIO"
+        private const val COLUMN_CLAVE = "CLAVE"
+        private const val COLUMN_NOMBRE = "NOMBRE"
+        private const val COLUMN_DIRECCION = "DIRECCION"
+        private const val COLUMN_TELEFONO1 = "TELEFONO1"
+        private const val COLUMN_TELEFONO2 = "TELEFONO2"
+        private const val COLUMN_CORREO = "CORREO"
+        private const val COLUMN_ID_ROL = "ID_ROL"
+        private const val COLUMN_ESTADO_USUARIO = "ESTADO_USUARIO"
+        private const val COLUMN_FECHA_DE_CREACION = "FECHA_DE_CREACION"
+        private const val COLUMN_FUM_USUARIO = "FUM"
+
+
+        //Columnas de la tabla roles
+        private const val TABLE_ROLES = "ROLES"
+        private const val COLUMN_ID_ROLES = "ID_ROL"
+        private const val COLUMN_ROL = "ROL"
+
         // Columnas de la tabla Estado_Cita
         private const val TABLE_ESTADO_CITA = "ESTADO_CITA"
         private const val COLUMN_ID_ESTADO_CITA_ESTADO_CITA = "ID_ESTADO_CITA"
@@ -62,13 +83,40 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 $COLUMN_ID_USUARIO_COMPRADOR INTEGER,
                 $COLUMN_ID_USUARIO_VENDEDOR INTEGER,
                 $COLUMN_FECHA_CITA TEXT,
-                $COLUMN_FECHA_CREACION TEXT,
+                $COLUMN_FECHA_DE_CREACION TEXT,
                 $COLUMN_FUM TEXT,
                 $COLUMN_ULTIMO_USUARIO INTEGER,
                 $COLUMN_ESTA_CANCELADA CHAR,
                 $COLUMN_FECHA_CANCELACION TEXT,
                 $COLUMN_MOTIVO_CANCELACION TEXT,
                 $COLUMN_USUARIO_CANCELACION INTEGER
+            )
+        """
+
+        // Creacion tabla ROLES
+        private const val CREATE_TABLE_ROLES = """
+            CREATE TABLE $TABLE_ROLES (
+                $COLUMN_ID_ROLES INTEGER PRIMARY KEY,
+                $COLUMN_ROL TEXT
+            )
+        """
+
+        // Creacion de la tabla Usuarios
+        private const val CREATE_TABLE_USUARIOS = """
+            CREATE TABLE $TABLE_USUARIOS (
+                $COLUMN_ID_USUARIO INTEGER PRIMARY KEY AUTOINCREMENT,
+                $COLUMN_USUARIO TEXT,
+                $COLUMN_CLAVE TEXT,
+                $COLUMN_NOMBRE TEXT,
+                $COLUMN_DIRECCION TEXT,
+                $COLUMN_TELEFONO1 INTEGER,
+                $COLUMN_TELEFONO2 INTEGER,
+                $COLUMN_CORREO TEXT,
+                $COLUMN_ID_ROL INTEGER,
+                $COLUMN_ESTADO_USUARIO TEXT,
+                $COLUMN_FECHA_DE_CREACION TEXT,
+                $COLUMN_FUM_USUARIO, TEXT,
+                FOREIGN KEY ($COLUMN_ID_ROL) REFERENCES $TABLE_ROLES($COLUMN_ID_ROL)
             )
         """
 
@@ -112,6 +160,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(CREATE_TABLE_CITAS)
+        db.execSQL(CREATE_TABLE_USUARIOS)
+        db.execSQL(CREATE_TABLE_ROLES)
         db.execSQL(CREATE_TABLE_ESTADO_CITA)
         db.execSQL(CREATE_TABLE_DEPARTAMENTOS)
         db.execSQL(CREATE_TABLE_MUNICIPIOS)
@@ -120,6 +170,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL("DROP TABLE IF EXISTS $TABLE_CITAS")
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_USUARIOS")
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_ROLES")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_ESTADO_CITA")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_DEPARTAMENTOS")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_MUNICIPIOS")
@@ -140,8 +192,29 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return result
     }
 
+// Método para insertar un registro en la tabla USUARIOS
+    fun insertUsuario(usuario: Usuario): Long {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_USUARIO, usuario.usuario)
+            put(COLUMN_CLAVE, usuario.clave)
+            put(COLUMN_NOMBRE, usuario.nombre)
+            put(COLUMN_DIRECCION, usuario.direccion)
+            put(COLUMN_TELEFONO1, usuario.telefono1)
+            put(COLUMN_TELEFONO2, usuario.telefono2)
+            put(COLUMN_CORREO, usuario.correo)
+            put(COLUMN_ID_ROL, usuario.idRol)
+            put(COLUMN_ESTADO_USUARIO, usuario.estadoUsuario)
+            put(COLUMN_FECHA_DE_CREACION, usuario.fechaCreacion?.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")))
+            put(COLUMN_FUM, usuario.fumUsuario?.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")))
+        }
+        val result = db.insert(TABLE_USUARIOS, null, values)
+        db.close()
+        return result
+    }
+
     // Método para insertar los valores iniciales en la tabla ESTADO_CITA
-    @RequiresApi(Build.VERSION_CODES.O)
+
     fun insertCita(cita: Cita): Long {
         val db = this.writableDatabase
         val values = ContentValues().apply {
@@ -165,7 +238,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     }
 
     // Metodo para obtener todos los registros de la tabla Citas
-    @RequiresApi(Build.VERSION_CODES.O)
+
     fun getAllCitas(): List<Cita> {
         val db = this.readableDatabase
         val cursor: Cursor = db.query(TABLE_CITAS, null, null, null, null, null, null)
@@ -246,6 +319,55 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val result = db.insert(TABLE_MUNICIPIOS, null, values)
         db.close()
         return result
+    }
+
+/*
+    fun getUser(usuario: String, clave: String): Boolean {
+        val columns = arrayOf(COLUMN_ID_USUARIO)
+        val db = this.readableDatabase
+        val selection = "$COLUMN_USUARIO = ? AND $COLUMN_CLAVE = ?"
+        val selectionArgs = arrayOf(usuario, clave)
+        val cursor: Cursor = db.query(TABLE_USUARIOS, columns, selection, selectionArgs, null, null, null)
+
+        val cursorCount = cursor.count
+        cursor.close()
+        db.close()
+
+        return cursorCount > 0
+    }
+*/
+
+    fun getUser(usuario: String, clave: String): Usuario? {
+        val db = this.readableDatabase
+        val cursor: Cursor = db.query(
+            TABLE_USUARIOS,
+            null,
+            "$COLUMN_USUARIO = ? AND $COLUMN_CLAVE = ?",
+            arrayOf(usuario, clave),
+            null,
+            null,
+            null
+        )
+        return if (cursor.moveToFirst()) {
+            val idUsuario = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID_USUARIO))
+            val usuario = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USUARIO))
+            val clave = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CLAVE))
+            val nombre = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NOMBRE))
+            val direccion = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DIRECCION))
+            val telefono1 = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_TELEFONO1))
+            val telefono2 = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_TELEFONO2))
+            val correo = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CORREO))
+            val idRol = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID_ROL))
+            val estadoUsuario = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ESTADO_USUARIO))
+            val fechaCreacion = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_FECHA_CREACION))?.let { LocalDate.parse(it, DateTimeFormatter.ofPattern("dd-MM-yyyy")) }
+            val fumUsuario = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_FUM))?.let { LocalDate.parse(it, DateTimeFormatter.ofPattern("dd-MM-yyyy")) }
+            Usuario(idUsuario, usuario, clave, nombre, direccion, telefono1, telefono2, correo, idRol, estadoUsuario, fechaCreacion, fumUsuario)
+        } else {
+            null
+        }.also {
+            cursor.close()
+            db.close()
+        }
     }
 
     fun getAllDepartamentos(): List<Departamento> {
