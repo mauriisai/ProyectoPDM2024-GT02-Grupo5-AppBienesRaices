@@ -5,8 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.os.Build
-import androidx.annotation.RequiresApi
+
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -320,22 +319,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         db.close()
         return result
     }
-
-/*
-    fun getUser(usuario: String, clave: String): Boolean {
-        val columns = arrayOf(COLUMN_ID_USUARIO)
-        val db = this.readableDatabase
-        val selection = "$COLUMN_USUARIO = ? AND $COLUMN_CLAVE = ?"
-        val selectionArgs = arrayOf(usuario, clave)
-        val cursor: Cursor = db.query(TABLE_USUARIOS, columns, selection, selectionArgs, null, null, null)
-
-        val cursorCount = cursor.count
-        cursor.close()
-        db.close()
-
-        return cursorCount > 0
-    }
-*/
 
     fun getUser(usuario: String, clave: String): Usuario? {
         val db = this.readableDatabase

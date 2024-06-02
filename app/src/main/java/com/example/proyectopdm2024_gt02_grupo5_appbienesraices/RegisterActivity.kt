@@ -2,7 +2,6 @@ package com.example.proyectopdm2024_gt02_grupo5_appbienesraices
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.proyectopdm2024_gt02_grupo5_appbienesraices.data.DatabaseHelper
@@ -28,7 +27,7 @@ class RegisterActivity : AppCompatActivity() {
         val tipoUsuarioSpinner: Spinner = findViewById(R.id.spinnerTipoUsuario)
         val registerButton: Button = findViewById(R.id.buttonRegistrar)
 
-        // Configurar el Spinner con opciones "Comprador" y "Vendedor"
+
         ArrayAdapter.createFromResource(
             this,
             R.array.tipo_usuario_array,
@@ -66,8 +65,6 @@ class RegisterActivity : AppCompatActivity() {
             if (usuario.isEmpty() || clave.isEmpty() || nombre.isEmpty() || telefono1 == null || correo.isEmpty()) {
                 Toast.makeText(this, "Por favor ingrese todos los detalles", Toast.LENGTH_SHORT).show()
             } else {
-                Log.e("RegisterActivity", "LLenado de campos.")
-                Toast.makeText(this, "Llenado de campos", Toast.LENGTH_SHORT).show()
                 val nuevoUsuario = Usuario(
                     usuario = usuario,
                     clave = clave,
@@ -81,7 +78,7 @@ class RegisterActivity : AppCompatActivity() {
                     fechaCreacion = fechaCreacion,
                     fumUsuario = fumUsuario
                 )
-                Log.e("RegisterActivity", "Ingreso de datos.")
+
                 val isInserted = databaseHelper.insertUsuario(nuevoUsuario)
                 if (isInserted != -1L) {
                     Toast.makeText(this, "Usuario registrado exitosamente", Toast.LENGTH_SHORT).show()
@@ -91,7 +88,7 @@ class RegisterActivity : AppCompatActivity() {
 
                 } else {
                     Toast.makeText(this, "Error al registrar el usuario", Toast.LENGTH_SHORT).show()
-                    Log.d("RegisterActivity", "Error al registrar el usuario en la base de datos.")
+
                 }
 
             }
