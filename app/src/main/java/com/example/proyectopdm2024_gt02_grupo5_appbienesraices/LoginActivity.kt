@@ -35,13 +35,11 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
                     val intent = if (user.idRol == 2) {
                         Intent(this, MainActivity::class.java)
-                        startActivity(intent)
-                        finish()
                     } else {
                         Intent(this, MainActivity2::class.java)
-                        startActivity(intent)
-                        finish()
                     }
+                    startActivity(intent)
+                    finish()
                 } else {
                     Toast.makeText(this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()
                 }
