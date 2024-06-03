@@ -33,7 +33,7 @@ class LoginActivity : AppCompatActivity() {
                 val user = databaseHelper.getUser(email, password)
                 if (user != null) {
                     Toast.makeText(this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
-                    val intent = if (user.idRol == 2) {
+                    val intent = if (user.idRol == 3) {
                         Intent(this, MainActivity::class.java)
                     } else {
                         Intent(this, MainActivity2::class.java)

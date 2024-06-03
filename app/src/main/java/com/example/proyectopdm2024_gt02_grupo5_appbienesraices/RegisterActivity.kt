@@ -92,9 +92,7 @@ class RegisterActivity : AppCompatActivity() {
                     Toast.makeText(this, "Error al registrar el usuario", Toast.LENGTH_SHORT).show()
 
                 }
-
             }
-
         }
     }
     private fun llenarTablaRoles() {

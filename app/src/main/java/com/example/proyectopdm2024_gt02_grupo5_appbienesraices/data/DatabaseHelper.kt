@@ -13,7 +13,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     companion object {
         private const val DATABASE_NAME = "InmuAppBd.db"
-        private const val DATABASE_VERSION = 7
+        private const val DATABASE_VERSION = 8
 
         // Columnas de la tabla Citas
         private const val TABLE_CITAS = "CITAS"
@@ -71,6 +71,27 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         private const val TABLE_TIPO_INMUEBLE = "TIPO_INMUEBLE"
         private const val COLUMN_ID_TIPO_INMUEBLE = "ID_TIPO_INMUEBLE"
         private const val COLUMN_TIPO_INMUEBLE = "TIPO_INMUEBLE"
+
+        // Columnas de la tabla INMUEBLE
+        private const val TABLE_INMUEBLES = "INMUEBLES"
+        private const val COLUMN_INMUEBLE_ID = "ID_INMUEBLE"
+        private const val COLUMN_TITULO = "TITULO"
+        private const val COLUMN_ID_DEPARTAMENTO_INMUEBLE = "ID_DEPARTAMENTO"
+        private const val COLUMN_ID_MUNICIPIO_INMUEBLE = "ID_MUNICIPIO"
+        private const val COLUMN_DESCRIPCION = "DESCRIPCION"
+        private const val COLUMN_PRECIO = "PRECIO"
+        private const val COLUMN_ESTADO_INMUEBLE = "ID_ESTADO"
+        private const val COLUMN_UBICACION = "UBICACION"
+        private const val COLUMN_TAMANIO = "TAMANIO"
+        private const val COLUMN_VISITAS = "VISITAS"
+        private const val COLUMN_TIPO_INMUEBLE_ID = "ID_TIPO_INMUEBLE"
+        private const val COLUMN_ID_USUARIO_VENDEDOR_INMUEBLE = "ID_USUARIO_VENDEDOR"
+        private const val COLUMN_FECHA_VENTA = "FECHA_VENTA"
+        private const val COLUMN_FECHA_CREACION_INMUEBLE = "FECHA_CREACION"
+        private const val COLUMN_FUM_INMUEBLE = "FUM"
+        private const val COLUMN_ULTIMO_USUARIO_INMUEBLE = "ULTIMO_USUARIO"
+        private const val COLUMN_USUARIO_CREACION_INMUEBLE = "USUARIO_CREACION"
+        private val dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
 
         // Creacion de la tabla Citas
         private const val CREATE_TABLE_CITAS = """
@@ -154,6 +175,48 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 $COLUMN_TIPO_INMUEBLE TEXT NOT NULL
             )
         """
+
+        // Sentencia SQL para crear la tabla INMUEBLES
+        private const val CREATE_TABLE_INMUEBLES = """
+            CREATE TABLE $TABLE_INMUEBLES (
+                $COLUMN_INMUEBLE_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                $COLUMN_TITULO TEXT NOT NULL,
+                $COLUMN_ID_DEPARTAMENTO_INMUEBLE INTEGER NOT NULL,
+                $COLUMN_ID_MUNICIPIO_INMUEBLE INTEGER,
+                $COLUMN_DESCRIPCION TEXT NOT NULL,
+                $COLUMN_PRECIO REAL NOT NULL,
+                $COLUMN_ESTADO_INMUEBLE INTEGER NOT NULL,
+                $COLUMN_UBICACION TEXT,
+                $COLUMN_TAMANIO REAL,
+                $COLUMN_VISITAS INTEGER,
+                $COLUMN_TIPO_INMUEBLE_ID INTEGER,
+                $COLUMN_ID_USUARIO_VENDEDOR_INMUEBLE INTEGER,
+                $COLUMN_FECHA_VENTA TEXT,
+                $COLUMN_FECHA_CREACION_INMUEBLE TEXT,
+                $COLUMN_FUM_INMUEBLE TEXT,
+                $COLUMN_ULTIMO_USUARIO_INMUEBLE INTEGER,
+                $COLUMN_USUARIO_CREACION_INMUEBLE INTEGER,
+                FOREIGN KEY ($COLUMN_ID_DEPARTAMENTO_INMUEBLE) REFERENCES DEPARTAMENTOS(ID_DEPARTAMENTO),
+                FOREIGN KEY ($COLUMN_ID_MUNICIPIO_INMUEBLE) REFERENCES MUNICIPIOS(ID_MUNICIPIO),
+                FOREIGN KEY ($COLUMN_ESTADO_INMUEBLE) REFERENCES ESTADO_INMUEBLE(ID_ESTADO),
+                FOREIGN KEY ($COLUMN_TIPO_INMUEBLE_ID) REFERENCES TIPO_INMUEBLE(ID_TIPO_INMUEBLE),
+                FOREIGN KEY ($COLUMN_ID_USUARIO_VENDEDOR_INMUEBLE) REFERENCES USUARIOS(ID_USUARIO)
+            )
+        """
+
+        //  Columnas de la tabla estado_INMUEBLE
+        private const val TABLE_ESTADO_INMUEBLE = "ESTADO_INMUEBLE"
+        private const val COLUMN_ID_ESTADO_INMUEBLE = "ID_ESTADO"
+        private const val COLUMN_NOMBRE_ESTADO = "NOMBRE_ESTADO"
+
+        // Crear tabla Estado_Inmueble
+        val CREATE_TABLE_ESTADO_INMUEBLES = """
+            CREATE TABLE $TABLE_ESTADO_INMUEBLE (
+                $COLUMN_ID_ESTADO_INMUEBLE INTEGER PRIMARY KEY ,
+                $COLUMN_NOMBRE_ESTADO TEXT NOT NULL
+            )
+        """
+
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -164,6 +227,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         db.execSQL(CREATE_TABLE_DEPARTAMENTOS)
         db.execSQL(CREATE_TABLE_MUNICIPIOS)
         db.execSQL(CREATE_TABLE_TIPO_INMUEBLE)
+        db.execSQL(CREATE_TABLE_ESTADO_INMUEBLES)
+        db.execSQL(CREATE_TABLE_INMUEBLES)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -174,8 +239,22 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         db.execSQL("DROP TABLE IF EXISTS $TABLE_DEPARTAMENTOS")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_MUNICIPIOS")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_TIPO_INMUEBLE")
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_INMUEBLES")
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_ESTADO_INMUEBLE")
 
         onCreate(db)
+    }
+
+    // Método para insertar los valores iniciales en la tabla ESTADO_INMUEBLE
+    fun insertEstadoInmueble(idEstadoInmueble: Int, nombreEstado: String): Long {
+        val db = this.writableDatabase
+        val contentValues = ContentValues().apply {
+            put(COLUMN_ID_ESTADO_INMUEBLE, idEstadoInmueble)
+            put(COLUMN_NOMBRE_ESTADO, nombreEstado)
+        }
+        val result = db.insert(TABLE_ESTADO_INMUEBLE, null, contentValues)
+        db.close()
+        return result
     }
 
     // Método para insertar los valores iniciales en la tabla ESTADO_CITA
@@ -202,7 +281,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return result
     }
 
-// Método para insertar un registro en la tabla USUARIOS
+    // Método para insertar un registro en la tabla USUARIOS
     fun insertUsuario(usuario: Usuario): Long {
         val db = this.writableDatabase
         val values = ContentValues().apply {
@@ -219,6 +298,32 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             put(COLUMN_FUM, usuario.fumUsuario?.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")))
         }
         val result = db.insert(TABLE_USUARIOS, null, values)
+        db.close()
+        return result
+    }
+
+    // Método para insertar un registro en la tabla INMUEBLES
+    fun insertInmueble(inmueble: Inmueble): Long {
+        val db = this.writableDatabase
+        val contentValues = ContentValues().apply {
+            put(COLUMN_TITULO, inmueble.titulo)
+            put(COLUMN_ID_DEPARTAMENTO_INMUEBLE, inmueble.idDepartamento)
+            put(COLUMN_ID_MUNICIPIO_INMUEBLE, inmueble.idMunicipio)
+            put(COLUMN_DESCRIPCION, inmueble.descripcion)
+            put(COLUMN_PRECIO, inmueble.precio)
+            put(COLUMN_ESTADO_INMUEBLE, inmueble.idEstado)
+            put(COLUMN_UBICACION, inmueble.ubicacion)
+            put(COLUMN_TAMANIO, inmueble.tamanio)
+            put(COLUMN_VISITAS, inmueble.visitas)
+            put(COLUMN_TIPO_INMUEBLE_ID, inmueble.idTipoInmueble)
+            put(COLUMN_ID_USUARIO_VENDEDOR_INMUEBLE, inmueble.idUsuarioVendedor)
+            put(COLUMN_FECHA_VENTA, inmueble.fechaVenta?.format(dateFormatter))
+            put(COLUMN_FECHA_CREACION_INMUEBLE, inmueble.fechaCreacion?.format(dateFormatter))
+            put(COLUMN_FUM_INMUEBLE, inmueble.fum?.format(dateFormatter))
+            put(COLUMN_ULTIMO_USUARIO_INMUEBLE, inmueble.ultimoUsuario)
+            put(COLUMN_USUARIO_CREACION_INMUEBLE, inmueble.usuarioCreacion)
+        }
+        val result = db.insert(TABLE_INMUEBLES, null, contentValues)
         db.close()
         return result
     }

@@ -6,10 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.proyectopdm2024_gt02_grupo5_appbienesraices.data.DatabaseHelper
+import com.example.proyectopdm2024_gt02_grupo5_appbienesraices.data.Inmueble
 import com.example.proyectopdm2024_gt02_grupo5_appbienesraices.databinding.FragmentCrearAnuncioBinding
+import java.time.LocalDate
 
 class CrearAnuncioFragment : Fragment() {
 
@@ -39,15 +42,84 @@ class CrearAnuncioFragment : Fragment() {
         dbHelper = DatabaseHelper(requireContext().applicationContext)
 
         // Llenar tablas Catalogos con datos iniciales
-        // llenarTablaTiposInmueble()
-        // llenarTablaDepartamentos()
-        // llenarTablaMunicipios()
-
+        llenarTablaTiposInmueble()
+        llenarTablaDepartamentos()
+        llenarTablaMunicipios()
+        // llenarTablaEstadosInmueble()
 
         // Llamada metodos de llenado de Spinners
         llenarSpinnerTipoInmueble()
         llenarSpinnersDepartamentosYMunicipios()
 
+        // Configurar el botón para publicar el anuncio
+        binding.btnPublicar.setOnClickListener {
+            insertAnuncio()
+        }
+
+    }
+
+    private fun insertAnuncio() {
+        val titulo = binding.etTitulo.text.toString()
+        val descripcion = binding.etDescripcion.text.toString()
+        val precioText = binding.etPrecio.text.toString()
+        val tamanioText = binding.etTamanio.text.toString()
+        val direccion = binding.etDireccion.text.toString()
+
+        if (titulo.isEmpty() || descripcion.isEmpty() || precioText.isEmpty() || tamanioText.isEmpty() || direccion.isEmpty()) {
+            Toast.makeText(requireContext(), "Por favor ingrese todos los detalles", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val precio = precioText.toDoubleOrNull()
+        val tamanio = tamanioText.toDoubleOrNull()
+
+        if (precio == null || tamanio == null) {
+            Toast.makeText(requireContext(), "Por favor ingrese valores válidos para precio y tamaño", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val idTipoInmueble = binding.spinnerTipoInmueble.selectedItemPosition + 1 // Suponiendo que el ID está basado en la posición
+        val idDepartamento = binding.spinnerDepartamentos.selectedItemPosition + 1 // Suponiendo que el ID está basado en la posición
+        val idMunicipio = binding.spinnerMunicipios.selectedItemPosition + 1 // Suponiendo que el ID está basado en la posición
+
+        val inmueble = Inmueble(
+            titulo = titulo,
+            idDepartamento = idDepartamento,
+            idMunicipio = idMunicipio,
+            descripcion = descripcion,
+            precio = precio,
+            idEstado = 1, // Asumiendo que 1 es "Disponible"
+            ubicacion = direccion,
+            tamanio = tamanio,
+            visitas = 0, // Inicialmente 0 visitas
+            idTipoInmueble = idTipoInmueble,
+            idUsuarioVendedor = null, // Asegúrate de ajustar esto según tu lógica
+            fechaVenta = null, // No se ha vendido
+            fechaCreacion = LocalDate.now(),
+            fum = LocalDate.now(),
+            ultimoUsuario = null, // Ajustar según tu lógica
+            usuarioCreacion = null // Ajustar según tu lógica
+        )
+
+        val result = dbHelper.insertInmueble(inmueble)
+
+        if (result != -1L) {
+            Toast.makeText(requireContext(), "Anuncio publicado con éxito", Toast.LENGTH_SHORT).show()
+            limpiarFormularioInmueble()
+        } else {
+            Toast.makeText(requireContext(), "Error al publicar el anuncio", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun limpiarFormularioInmueble() {
+        binding.etTitulo.text.clear()
+        binding.etDescripcion.text.clear()
+        binding.etPrecio.text.clear()
+        binding.etTamanio.text.clear()
+        binding.etDireccion.text.clear()
+        binding.spinnerTipoInmueble.setSelection(0)
+        binding.spinnerDepartamentos.setSelection(0)
+        binding.spinnerMunicipios.setSelection(0)
     }
 
     private fun llenarSpinnersDepartamentosYMunicipios() {
@@ -80,6 +152,8 @@ class CrearAnuncioFragment : Fragment() {
         }
     }
 
+
+
     private fun llenarSpinnerTipoInmueble() {
         // Obtener los datos de la tabla
         val tiposInmueble = dbHelper.getAllTipoInmueble().map { it.tipo }
@@ -105,6 +179,12 @@ class CrearAnuncioFragment : Fragment() {
         dbHelper.insertDepartamento(12, "Santa Ana")
         dbHelper.insertDepartamento(13, "Sonsonate")
         dbHelper.insertDepartamento(14, "Usulután")
+    }
+
+    private fun llenarTablaEstadosInmueble() {
+        dbHelper.insertEstadoInmueble(1, "Disponible")
+        dbHelper.insertEstadoInmueble(2, "Vendido")
+        dbHelper.insertEstadoInmueble(3, "Cancelado")
     }
 
     private fun llenarTablaTiposInmueble() {
