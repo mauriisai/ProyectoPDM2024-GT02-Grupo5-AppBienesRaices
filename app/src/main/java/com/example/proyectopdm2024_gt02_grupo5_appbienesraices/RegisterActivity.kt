@@ -27,6 +27,8 @@ class RegisterActivity : AppCompatActivity() {
         val tipoUsuarioSpinner: Spinner = findViewById(R.id.spinnerTipoUsuario)
         val registerButton: Button = findViewById(R.id.buttonRegistrar)
 
+        // Metodo para llenar roles iniciales
+        // llenarTablaRoles()
 
         ArrayAdapter.createFromResource(
             this,
@@ -94,5 +96,11 @@ class RegisterActivity : AppCompatActivity() {
             }
 
         }
+    }
+    private fun llenarTablaRoles() {
+
+        databaseHelper.insertRol(1, "Administrador")
+        databaseHelper.insertRol(2, "Comprador")
+        databaseHelper.insertRol(3, "Vendedor")
     }
 }

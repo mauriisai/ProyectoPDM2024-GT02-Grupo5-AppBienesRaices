@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.proyectopdm2024_gt02_grupo5_appbienesraices.ui.anuncio.anuncio"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_anuncio" />
+        android:name="com.example.proyectopdm2024_gt02_grupo5_appbienesraices.ui.PrincipalAnuncios.PrincipalAnuncios"
+        android:label="fragment_principal_anuncios"
+        tools:layout="@layout/fragment_principal_anuncios" />
 
     <fragment
         android:id="@+id/navigation_dashboard"

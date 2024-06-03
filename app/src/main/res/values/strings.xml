@@ -2,7 +2,7 @@
     <string name="app_name">ProyectoPDM2024-GT02-Grupo5-AppBienesRaices</string>
     <string name="title_home">Inicio</string>
     <string name="title_dashboard">Crear Anuncio</string>
-    <string name="title_notifications">Agenda</string>
+    <string name="title_notifications">Citas</string>
     <string name="prompt">Seleccione</string>
     <string name="btn_img">Cargar Imagenes</string>
     <!-- TODO: Remove or change this placeholder text -->

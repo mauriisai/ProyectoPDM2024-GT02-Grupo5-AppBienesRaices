@@ -13,7 +13,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     companion object {
         private const val DATABASE_NAME = "InmuAppBd.db"
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 7
 
         // Columnas de la tabla Citas
         private const val TABLE_CITAS = "CITAS"
@@ -45,7 +45,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         private const val COLUMN_ESTADO_USUARIO = "ESTADO_USUARIO"
         private const val COLUMN_FECHA_DE_CREACION = "FECHA_DE_CREACION"
         private const val COLUMN_FUM_USUARIO = "FUM"
-
 
         //Columnas de la tabla roles
         private const val TABLE_ROLES = "ROLES"
@@ -114,8 +113,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 $COLUMN_ID_ROL INTEGER,
                 $COLUMN_ESTADO_USUARIO TEXT,
                 $COLUMN_FECHA_DE_CREACION TEXT,
-                $COLUMN_FUM_USUARIO, TEXT,
-                FOREIGN KEY ($COLUMN_ID_ROL) REFERENCES $TABLE_ROLES($COLUMN_ID_ROL)
+                $COLUMN_FUM_USUARIO TEXT,
+                FOREIGN KEY ($COLUMN_ID_ROL) REFERENCES $TABLE_ROLES($COLUMN_ID_ROLES)
             )
         """
 
@@ -187,6 +186,18 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             put(COLUMN_ESTADO, estado)
         }
         val result = db.insert(TABLE_ESTADO_CITA, null, values)
+        db.close()
+        return result
+    }
+
+    // Método para insertar los valores iniciales en la tabla ROLES
+    fun insertRol(idRol: Int, rol: String): Long {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_ID_ROLES, idRol)
+            put(COLUMN_ROL, rol)
+        }
+        val result = db.insert(TABLE_ROLES, null, values)
         db.close()
         return result
     }
@@ -342,7 +353,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             val correo = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CORREO))
             val idRol = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID_ROL))
             val estadoUsuario = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ESTADO_USUARIO))
-            val fechaCreacion = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_FECHA_CREACION))?.let { LocalDate.parse(it, DateTimeFormatter.ofPattern("dd-MM-yyyy")) }
+            val fechaCreacion = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_FECHA_DE_CREACION))?.let { LocalDate.parse(it, DateTimeFormatter.ofPattern("dd-MM-yyyy")) }
             val fumUsuario = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_FUM))?.let { LocalDate.parse(it, DateTimeFormatter.ofPattern("dd-MM-yyyy")) }
             Usuario(idUsuario, usuario, clave, nombre, direccion, telefono1, telefono2, correo, idRol, estadoUsuario, fechaCreacion, fumUsuario)
         } else {
