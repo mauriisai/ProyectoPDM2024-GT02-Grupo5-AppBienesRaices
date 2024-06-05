@@ -28,7 +28,7 @@ class RegisterActivity : AppCompatActivity() {
         val registerButton: Button = findViewById(R.id.buttonRegistrar)
 
         // Metodo para llenar roles iniciales
-        // llenarTablaRoles()
+        llenarTablaRoles()
 
         ArrayAdapter.createFromResource(
             this,

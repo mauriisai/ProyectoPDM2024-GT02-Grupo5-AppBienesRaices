@@ -13,7 +13,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     companion object {
         private const val DATABASE_NAME = "InmuAppBd.db"
-        private const val DATABASE_VERSION = 8
+        private const val DATABASE_VERSION = 1
 
         // Columnas de la tabla Citas
         private const val TABLE_CITAS = "CITAS"
@@ -92,6 +92,11 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         private const val COLUMN_ULTIMO_USUARIO_INMUEBLE = "ULTIMO_USUARIO"
         private const val COLUMN_USUARIO_CREACION_INMUEBLE = "USUARIO_CREACION"
         private val dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+
+        private const val TABLE_IMG_INMUEBLES = "IMG_INMUEBLES"
+        private const val COLUMN_ID_IMG = "ID_IMG"
+        private const val COLUMN_IMAGEN = "IMAGEN"
+        private const val COLUMN_CORRELATIVO = "CORRELATIVO"
 
         // Creacion de la tabla Citas
         private const val CREATE_TABLE_CITAS = """
@@ -204,6 +209,16 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             )
         """
 
+        private const val CREATE_TABLE_IMG_INMUEBLES = """
+            CREATE TABLE $TABLE_IMG_INMUEBLES (
+                $COLUMN_ID_IMG INTEGER PRIMARY KEY AUTOINCREMENT,
+                $COLUMN_ID_INMUEBLE INTEGER,
+                $COLUMN_IMAGEN TEXT,
+                $COLUMN_CORRELATIVO INTEGER,
+                FOREIGN KEY ($COLUMN_ID_INMUEBLE) REFERENCES $TABLE_INMUEBLES($COLUMN_INMUEBLE_ID)
+            )
+        """
+
         //  Columnas de la tabla estado_INMUEBLE
         private const val TABLE_ESTADO_INMUEBLE = "ESTADO_INMUEBLE"
         private const val COLUMN_ID_ESTADO_INMUEBLE = "ID_ESTADO"
@@ -229,6 +244,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         db.execSQL(CREATE_TABLE_TIPO_INMUEBLE)
         db.execSQL(CREATE_TABLE_ESTADO_INMUEBLES)
         db.execSQL(CREATE_TABLE_INMUEBLES)
+        db.execSQL(CREATE_TABLE_IMG_INMUEBLES)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -239,6 +255,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         db.execSQL("DROP TABLE IF EXISTS $TABLE_DEPARTAMENTOS")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_MUNICIPIOS")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_TIPO_INMUEBLE")
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_IMG_INMUEBLES")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_INMUEBLES")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_ESTADO_INMUEBLE")
 
@@ -255,6 +272,33 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val result = db.insert(TABLE_ESTADO_INMUEBLE, null, contentValues)
         db.close()
         return result
+    }
+
+    // Método para insertar los registros IMG_INMUEBLE
+    fun insertImage(inmuebleId: Int, imagePath: String) {
+        val db = this.writableDatabase
+
+        // Obtener el máximo correlativo para el inmuebleId
+        val query = "SELECT MAX($COLUMN_CORRELATIVO) FROM $TABLE_IMG_INMUEBLES WHERE $COLUMN_ID_INMUEBLE = ?"
+        val cursor = db.rawQuery(query, arrayOf(inmuebleId.toString()))
+
+        var correlativo = 0 // Valor predeterminado si no hay registros existentes para el inmueble
+
+        if (cursor != null && cursor.moveToFirst()) {
+            correlativo = cursor.getInt(0) + 1 // Incrementar el correlativo en uno
+        }
+
+        cursor?.close()
+
+        // Insertar la nueva imagen con el correlativo actualizado
+        val values = ContentValues().apply {
+            put(COLUMN_ID_INMUEBLE, inmuebleId)
+            put(COLUMN_IMAGEN, imagePath)
+            put(COLUMN_CORRELATIVO, correlativo)
+        }
+
+        db.insert(TABLE_IMG_INMUEBLES, null, values)
+        db.close()
     }
 
     // Método para insertar los valores iniciales en la tabla ESTADO_CITA
@@ -352,8 +396,32 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return result
     }
 
-    // Metodo para obtener todos los registros de la tabla Citas
+    fun getInmuebleDetails(idInmueble: Int): InmuebleDetails? {
+        val db = this.readableDatabase
+        val query = """
+            SELECT i.TITULO, m.MUNICIPIO, i.PRECIO, i.TAMANIO, i.DESCRIPCION, i.ID_USUARIO_VENDEDOR, d.DEPARTAMENTO 
+            FROM INMUEBLES i
+            INNER JOIN DEPARTAMENTOS d ON i.ID_DEPARTAMENTO = d.ID_DEPARTAMENTO
+            INNER JOIN MUNICIPIOS m ON i.ID_MUNICIPIO = m.ID_MUNICIPIO 
+            WHERE i.ID_INMUEBLE = ?
+        """
+        val cursor = db.rawQuery(query, arrayOf(idInmueble.toString()))
 
+        if (cursor.moveToFirst()) {
+            val titulo = cursor.getString(cursor.getColumnIndexOrThrow("TITULO"))
+            val municipio = cursor.getString(cursor.getColumnIndexOrThrow("MUNICIPIO"))
+            val precio = cursor.getDouble(cursor.getColumnIndexOrThrow("PRECIO"))
+            val tamanio = cursor.getString(cursor.getColumnIndexOrThrow("TAMANIO"))
+            val descripcion = cursor.getString(cursor.getColumnIndexOrThrow("DESCRIPCION"))
+            val departamento = cursor.getString(cursor.getColumnIndexOrThrow("DEPARTAMENTO"))
+            cursor.close()
+            return InmuebleDetails(titulo, municipio, precio, tamanio, descripcion, departamento)
+        }
+        cursor.close()
+        return null
+    }
+
+    // Metodo para obtener todos los registros de la tabla Citas
     fun getAllCitas(): List<Cita> {
         val db = this.readableDatabase
         val cursor: Cursor = db.query(TABLE_CITAS, null, null, null, null, null, null)

@@ -49,11 +49,7 @@ class PrincipalAnuncios : Fragment() {
 
         }
 
-
     }
-
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater,

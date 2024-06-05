@@ -1,18 +1,33 @@
 package com.example.proyectopdm2024_gt02_grupo5_appbienesraices.ui.crearAnuncio
 
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Environment
+import android.media.MediaScannerConnection
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.proyectopdm2024_gt02_grupo5_appbienesraices.data.DatabaseHelper
 import com.example.proyectopdm2024_gt02_grupo5_appbienesraices.data.Inmueble
 import com.example.proyectopdm2024_gt02_grupo5_appbienesraices.databinding.FragmentCrearAnuncioBinding
+import java.io.File
 import java.time.LocalDate
+import android.Manifest
+import android.content.Context
+import java.io.FileOutputStream
+import java.io.IOException
 
 class CrearAnuncioFragment : Fragment() {
 
@@ -23,6 +38,13 @@ class CrearAnuncioFragment : Fragment() {
     private lateinit var adapterMunicipios: ArrayAdapter<String>
     private lateinit var adapterTipoInmueble: ArrayAdapter<String>
 
+    // Variables para el manejo de imagenes
+    private lateinit var imagesAdapter: ImagesAdapter
+    private val selectedImages = mutableListOf<Uri>()
+
+    companion object {
+        const val REQUEST_IMAGE_PICK = 1
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,17 +67,108 @@ class CrearAnuncioFragment : Fragment() {
         llenarTablaTiposInmueble()
         llenarTablaDepartamentos()
         llenarTablaMunicipios()
-        // llenarTablaEstadosInmueble()
+        llenarTablaEstadosInmueble()
 
         // Llamada metodos de llenado de Spinners
         llenarSpinnerTipoInmueble()
         llenarSpinnersDepartamentosYMunicipios()
 
+        // Configurar el RecyclerView para las imágenes
+        imagesAdapter = ImagesAdapter(selectedImages)
+        binding.recyclerViewImages.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.recyclerViewImages.adapter = imagesAdapter
+
+        // Configurar el botón para seleccionar imágenes
+        binding.btnCargarImg.setOnClickListener {
+            selectImages()
+        }
+
         // Configurar el botón para publicar el anuncio
         binding.btnPublicar.setOnClickListener {
             insertAnuncio()
         }
+        checkPermissions()
 
+
+        val directoryPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath
+        scanDirectory(requireContext(),directoryPath)
+    }
+
+    private fun selectImages() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).apply {
+            type = "image/*"
+            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        }
+        startActivityForResult(intent, REQUEST_IMAGE_PICK)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_IMAGE_PICK && resultCode == Activity.RESULT_OK) {
+            data?.clipData?.let { clipData ->
+                for (i in 0 until clipData.itemCount) {
+                    val imageUri = clipData.getItemAt(i).uri
+                    selectedImages.add(imageUri)
+                }
+            } ?: data?.data?.let { uri ->
+                selectedImages.add(uri)
+            }
+            imagesAdapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun scanFilesInDirectory(context: Context, directory: File) {
+        if (directory.isDirectory) {
+            val files = directory.listFiles()
+            if (files != null) {
+                for (file in files) {
+                    if (file.isFile) {
+                        // Escanear el archivo
+                        scanFile(context, file)
+                    } else if (file.isDirectory) {
+                        // Si es un directorio, llamar recursivamente a la función para escanear los archivos dentro del directorio
+                        scanFilesInDirectory(context, file)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun scanFile(context: Context, file: File) {
+        MediaScannerConnection.scanFile(context, arrayOf(file.absolutePath), null) { path, uri ->
+            Log.i("MediaScanner", "Scanned $path:")
+            Log.i("MediaScanner", "-> uri=$uri")
+        }
+    }
+
+    // Llama a esta función para escanear todos los archivos en la carpeta específica
+    private fun scanDirectory(context: Context, directoryPath: String) {
+        val directory = File(directoryPath)
+        if (directory.exists() && directory.isDirectory) {
+            scanFilesInDirectory(context, directory)
+        } else {
+            Log.e("MediaScanner", "La ruta especificada no es un directorio válido: $directoryPath")
+        }
+    }
+
+
+    private val PERMISSION_REQUEST_CODE = 100
+
+    private fun checkPermissions() {
+        val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        ActivityCompat.requestPermissions(requireContext() as Activity, permissions, PERMISSION_REQUEST_CODE)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted
+            } else {
+                // Permission denied
+                Toast.makeText(requireContext(), "Permisos denegados", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun insertAnuncio() {
@@ -78,9 +191,9 @@ class CrearAnuncioFragment : Fragment() {
             return
         }
 
-        val idTipoInmueble = binding.spinnerTipoInmueble.selectedItemPosition + 1 // Suponiendo que el ID está basado en la posición
-        val idDepartamento = binding.spinnerDepartamentos.selectedItemPosition + 1 // Suponiendo que el ID está basado en la posición
-        val idMunicipio = binding.spinnerMunicipios.selectedItemPosition + 1 // Suponiendo que el ID está basado en la posición
+        val idTipoInmueble = binding.spinnerTipoInmueble.selectedItemPosition + 1
+        val idDepartamento = binding.spinnerDepartamentos.selectedItemPosition + 1
+        val idMunicipio = binding.spinnerMunicipios.selectedItemPosition + 1
 
         val inmueble = Inmueble(
             titulo = titulo,
@@ -88,27 +201,60 @@ class CrearAnuncioFragment : Fragment() {
             idMunicipio = idMunicipio,
             descripcion = descripcion,
             precio = precio,
-            idEstado = 1, // Asumiendo que 1 es "Disponible"
+            idEstado = 1,
             ubicacion = direccion,
             tamanio = tamanio,
-            visitas = 0, // Inicialmente 0 visitas
+            visitas = 0,
             idTipoInmueble = idTipoInmueble,
-            idUsuarioVendedor = null, // Asegúrate de ajustar esto según tu lógica
-            fechaVenta = null, // No se ha vendido
+            idUsuarioVendedor = null,
+            fechaVenta = null,
             fechaCreacion = LocalDate.now(),
             fum = LocalDate.now(),
-            ultimoUsuario = null, // Ajustar según tu lógica
-            usuarioCreacion = null // Ajustar según tu lógica
+            ultimoUsuario = null,
+            usuarioCreacion = null
         )
 
         val result = dbHelper.insertInmueble(inmueble)
 
         if (result != -1L) {
+            val idInmueble = result.toInt()
+            for (imageUri in selectedImages) {
+                // Aquí guardamos la ruta de la imagen en la base de datos en lugar de los bytes de la imagen
+                val imagePath = saveImageToStorage(imageUri)
+                dbHelper.insertImage(idInmueble, imagePath)
+
+
+            }
             Toast.makeText(requireContext(), "Anuncio publicado con éxito", Toast.LENGTH_SHORT).show()
             limpiarFormularioInmueble()
         } else {
             Toast.makeText(requireContext(), "Error al publicar el anuncio", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun saveImageToStorage(imageUri: Uri): String {
+        // Obtener el directorio de almacenamiento de imágenes de la aplicación
+        val imagesDir = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        // Crear un nombre único para la imagen
+        val imageName = "image_${System.currentTimeMillis()}.jpg"
+        // Crear un archivo en el directorio de imágenes y copiar el contenido de la imagen seleccionada a este archivo
+        val destFile = File(imagesDir, imageName)
+        try {
+            requireContext().contentResolver.openInputStream(imageUri)?.use { inputStream ->
+                FileOutputStream(destFile).use { outputStream ->
+                    inputStream.copyTo(outputStream)
+                }
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        // Devolver la ruta absoluta del archivo guardado
+        return destFile.absolutePath
+    }
+
+    private fun convertUriToByteArray(uri: Uri): ByteArray {
+        val inputStream = requireContext().contentResolver.openInputStream(uri)
+        return inputStream?.readBytes() ?: ByteArray(0)
     }
 
     private fun limpiarFormularioInmueble() {
@@ -151,8 +297,6 @@ class CrearAnuncioFragment : Fragment() {
             }
         }
     }
-
-
 
     private fun llenarSpinnerTipoInmueble() {
         // Obtener los datos de la tabla

@@ -218,6 +218,8 @@
             android:layout_height="wrap_content"
             android:text="@string/btn_img" />
 
+
+
         <!-- Botón para publicar el anuncio -->
         <Button
             android:id="@+id/btn_publicar"
@@ -225,6 +227,15 @@
             android:layout_marginStart="210dp"
             android:layout_height="wrap_content"
             android:text="Publicar Anuncio" />
+
+        <!-- Agrega un RecyclerView para mostrar las imágenes seleccionadas -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewImages"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"/>
 
     </LinearLayout>
 
