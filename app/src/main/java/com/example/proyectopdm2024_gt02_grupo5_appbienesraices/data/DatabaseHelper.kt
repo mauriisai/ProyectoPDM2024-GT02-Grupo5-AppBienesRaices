@@ -13,7 +13,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     companion object {
         private const val DATABASE_NAME = "InmuAppBd.db"
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 2
 
         // Columnas de la tabla Citas
         private const val TABLE_CITAS = "CITAS"
@@ -260,6 +260,36 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         db.execSQL("DROP TABLE IF EXISTS $TABLE_ESTADO_INMUEBLE")
 
         onCreate(db)
+    }
+
+    fun getInmueblesConImagenCorrelativoUno(): List<InmuebleConImagen> {
+        val query = """
+        SELECT i.TITULO, i.PRECIO, i.TAMANIO, i.UBICACION, img.IMAGEN
+        FROM INMUEBLES i
+        INNER JOIN IMG_INMUEBLES img ON i.ID_INMUEBLE = img.ID_INMUEBLE
+        WHERE img.CORRELATIVO = 1
+    """.trimIndent()
+
+        val db = this.readableDatabase
+        val inmuebles = mutableListOf<InmuebleConImagen>()
+
+        val cursor = db.rawQuery(query, null)
+        cursor.use { cursor ->
+            while (cursor.moveToNext()) {
+                val titulo = cursor.getString(cursor.getColumnIndexOrThrow("TITULO"))
+                val precio = cursor.getDouble(cursor.getColumnIndexOrThrow("PRECIO"))
+                val tamanio = cursor.getDouble(cursor.getColumnIndexOrThrow("TAMANIO"))
+                val ubicacion = cursor.getString(cursor.getColumnIndexOrThrow("UBICACION"))
+                val imagen = cursor.getString(cursor.getColumnIndexOrThrow("IMAGEN"))
+
+                val inmueble = InmuebleConImagen(titulo, precio, tamanio, ubicacion, imagen)
+                inmuebles.add(inmueble)
+            }
+        }
+
+        db.close()
+
+        return inmuebles
     }
 
     // Método para insertar los valores iniciales en la tabla ESTADO_INMUEBLE

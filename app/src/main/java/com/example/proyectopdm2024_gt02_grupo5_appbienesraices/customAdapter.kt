@@ -1,48 +1,38 @@
 package com.example.proyectopdm2024_gt02_grupo5_appbienesraices
-
 import android.view.LayoutInflater
-import  android.view.View
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.proyectopdm2024_gt02_grupo5_appbienesraices.R
+import com.example.proyectopdm2024_gt02_grupo5_appbienesraices.data.InmuebleConImagen
 
+class CustomAdapter(private val data: List<InmuebleConImagen>) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
-class CustomAdapter: RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
-    val titles = arrayOf("Artículo1", "Artículo2", "Artículo3", "Artículo4", "Artículo5")
-
-    val precios = arrayOf("Precio1", "Precio2", "Precio3", "Precio4", "Precio5")
-    val ubicaciones = arrayOf("Ubicación1", "Ubicación2", "Ubicación3", "Ubicación4", "Ubicación5")
-    val dimensiones = arrayOf("Dimensiones1", "Dimensiones2", "Dimensiones3", "Dimensiones4", "Dimensiones5")
-
-    val images = intArrayOf(R.drawable.img1, R.drawable.img2, R.drawable.img3, R.drawable.img4, R.drawable.img5)
-    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
-        val v = LayoutInflater.from(viewGroup.context).inflate(R.layout.card_layout, viewGroup, false)
-        return ViewHolder(v)
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val imageView: ImageView = itemView.findViewById(R.id.imageView)
+        val titleTextView: TextView = itemView.findViewById(R.id.tittle)
+        val precioTextView: TextView = itemView.findViewById(R.id.textPrecio)
+        val ubicacionTextView: TextView = itemView.findViewById(R.id.textUbicacion)
+        val dimensionesTextView: TextView = itemView.findViewById(R.id.textDimensiones)
     }
 
-    override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
-        viewHolder.itemTitle.text = titles[i]
-        viewHolder.itemPrecio.text = precios[i]
-        viewHolder.itemUbicacion.text = ubicaciones[i]
-        viewHolder.itemDimesion.text = dimensiones[i]
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.card_layout, parent, false)
+        return ViewHolder(view)
     }
-    override fun getItemCount(): Int {
-        return titles.size
-    }
-    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        var itemImage: ImageView
-        var itemTitle: TextView
-        var itemPrecio: TextView
-        var itemUbicacion: TextView
-        var itemDimesion: TextView
 
-        init {
-            itemImage = itemView.findViewById(R.id.imageView)
-            itemTitle = itemView.findViewById(R.id.tittle)
-            itemPrecio = itemView.findViewById(R.id.textPrecio)
-            itemUbicacion = itemView.findViewById(R.id.textUbicacion)
-            itemDimesion = itemView.findViewById(R.id.textDimensiones)
-        }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val currentItem = data[position]
+
+        Glide.with(holder.itemView.context).load(currentItem.imagen).into(holder.imageView)
+        holder.titleTextView.text = currentItem.titulo
+        holder.precioTextView.text = "Precio: ${currentItem.precio}"
+        holder.ubicacionTextView.text = "Ubicación: ${currentItem.ubicacion}"
+        holder.dimensionesTextView.text = "Tamaño: ${currentItem.tamanio} m²"
     }
+
+    override fun getItemCount() = data.size
 }
